@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/user-list',[UserController::class,'userList'])->name('user-list');
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::delete('/delete/users/{id}', [UserController::class, 'destroy']);
+Route::put('/update/users/{id}', [UserController::class, 'update']);
 
 require __DIR__.'/auth.php';
