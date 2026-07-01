@@ -13,4 +13,5 @@ git push origin branch_name --> push changes to remote repository
 git pull origin main --> pull latest changes from remote repository
 git merge branch_name --> merge changes from one branch to another
 
-hello
+git log --oneline --> show commit history in one line
+git reset --hard commit_hash --> reset to specific commit   
