@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends Controller
@@ -25,10 +26,16 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
 {
-    $request->validate([
-        'email' => 'required|unique:email',
+    $validator= Validator:: make($request->all(), [
+        'email' => 'required|email|unique:users,email,' . $id,
         'name' => 'required'
     ]);
+    if ($validator->fails()) {
+    return response()->json([
+        'success' => false,
+        'errors' => $validator->errors()
+    ], 422);
+}
     $user = User::findOrFail($id);
 
     $user->update([
