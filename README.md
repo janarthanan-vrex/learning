@@ -15,3 +15,5 @@ git merge branch_name --> merge changes from one branch to another
 
 git log --oneline --> show commit history in one line
 git reset --hard commit_hash --> reset to specific commit   
+
+fine
