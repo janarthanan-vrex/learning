@@ -5,8 +5,16 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('landing.platform');
 });
+
+Route::get('/platform', function () {
+    return view('landing.platform');
+})->name('landing.platform');
+
+Route::get('/agency', function () {
+    return view('landing.agency');
+})->name('landing.agency');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

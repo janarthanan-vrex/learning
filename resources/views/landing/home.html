@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Dropdown + Google Translate</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f6f8;
+    color: #222;
+  }
+  header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header h1 { margin: 0; font-size: 1.4rem; }
+
+  /* ---- Your pretty custom dropdown ---- */
+  .lang-select-wrap { display: flex; align-items: center; gap: 8px; }
+  select#prettyLangSwitcher {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #fff;
+    color: #222;
+  }
+
+  main {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  h2 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px; }
+  p { line-height: 1.7; font-size: 1.05rem; }
+  ul { line-height: 1.8; }
+  .btn {
+    background: #2c80b4;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .btn:hover { background: #236a94; }
+  footer { text-align: center; padding: 20px; color: #777; font-size: 0.9rem; }
+
+  /* ---- Hide Google's default widget completely ---- */
+  #google_translate_element {
+    display: none !important;
+  }
+  .goog-te-banner-frame,
+  .goog-tooltip,
+  .goog-tooltip:hover,
+  .goog-text-highlight {
+    display: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    top: 0 !important;
+  }
+  .skiptranslate {
+    display: none !important;
+  }
+  iframe.skiptranslate {
+    display: none !important;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>My Website</h1>
+  <div class="lang-select-wrap">
+    <label for="prettyLangSwitcher">Language:</label>
+    <select id="prettyLangSwitcher" onchange="changeLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="ta">தமிழ்</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <h2>Welcome!</h2>
+  <p>
+    This is a demo page. All content here, including anything you add later, gets translated
+    automatically by Google's own translation engine &mdash; but through your own clean dropdown,
+    with no Google logo or banner shown.
+  </p>
+
+  <h2>About Us</h2>
+  <p>
+    We build simple, fast, and easy-to-use web applications for everyone. Our goal is to make
+    technology accessible in every language.
+  </p>
+
+  <h2>Features</h2>
+  <ul>
+    <li>Easy to use interface</li>
+    <li>Works on mobile and desktop</li>
+    <li>Automatically translates any new content added</li>
+    <li>No manual translation dictionary needed</li>
+  </ul>
+
+  <button class="btn" onclick="alert('Thank you for reaching out!')">Contact Us</button>
+  <h1>Janarthanan B</h1>
+</main>
+
+<footer>
+  &copy; 2026 My Website. All rights reserved.
+</footer>
+
+<!-- Hidden Google Translate widget: does the real translation work in the background -->
+<div id="google_translate_element"></div>
+
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: 'en',
+        includedLanguages: 'en,ta,hi',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      },
+      'google_translate_element'
+    );
+  }
+
+  // Reads/writes the googtrans cookie that Google's widget uses internally
+  function setGoogTransCookie(lang) {
+    const value = lang === 'en' ? '' : `/en/${lang}`;
+    document.cookie = `googtrans=${value}; path=/`;
+    document.cookie = `googtrans=${value}; path=/; domain=${window.location.hostname}`;
+  }
+
+  function changeLanguage(lang) {
+    setGoogTransCookie(lang);
+    // Reload so the hidden Google widget re-applies translation from the cookie on load
+    window.location.reload();
+  }
+
+  // On page load, sync the pretty dropdown to whatever language the cookie says
+  window.addEventListener('load', () => {
+    const match = document.cookie.match(/googtrans=\/en\/(\w+)/);
+    const lang = match ? match[1] : 'en';
+    document.getElementById('prettyLangSwitcher').value = lang;
+  });
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
